@@ -6,11 +6,13 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // ✅ CORS configurado con variable de entorno
   app.enableCors({
     origin: process.env.FRONTEND_URL || '*',
     methods: 'GET,POST,PATCH,DELETE',
   });
 
+  // ✅ Validaciones globales
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -19,6 +21,7 @@ async function bootstrap() {
     }),
   );
 
+  // ✅ Swagger config
   const config = new DocumentBuilder()
     .setTitle('Notes Challenge API')
     .setDescription('API for Notes Management Challenge - Ensolvers')
@@ -31,11 +34,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
+  // ✅ Puerto dinámico para Render
   const port = process.env.PORT || 3000;
-  await app.listen(port);
-  
-  console.log(`🚀 Application is running on: http://localhost:${port}`);
-  console.log(`📚 Swagger docs available at: http://localhost:${port}/api/docs`);
+  await app.listen(port, '0.0.0.0'); // 👈 importante en Render
+
+  console.log(`🚀 Application is running on port: ${port}`);
+  console.log(`📚 Swagger docs available at: /api/docs`);
 }
 
 bootstrap();
