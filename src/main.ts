@@ -10,9 +10,19 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     // ✅ CORS configurado con variable de entorno
+    const allowedOrigins = [
+      'https://challengefront.vercel.app',
+      'http://localhost:3000',
+      'http://localhost:5173',
+      process.env.FRONTEND_URL,
+    ].filter(Boolean); // Filtrar valores undefined
+
+    console.log('🔒 CORS origins allowed:', allowedOrigins);
+    
     app.enableCors({
-      origin: process.env.FRONTEND_URL || '*',
-      methods: 'GET,POST,PATCH,DELETE',
+      origin: allowedOrigins,
+      methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
       credentials: true,
     });
 
