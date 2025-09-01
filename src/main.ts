@@ -37,9 +37,6 @@ async function bootstrap() {
   // ✅ Puerto dinámico para Render
   const port = process.env.PORT || 3000;
   await app.listen(port, '0.0.0.0'); // 👈 importante en Render
-
-  console.log(`🚀 Application is running on port: ${port}`);
-  console.log(`📚 Swagger docs available at: http://0.0.0.0:${port}/api/docs`);
 }
 
 bootstrap();
